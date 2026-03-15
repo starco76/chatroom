@@ -6,7 +6,7 @@ const baseURL = window.location.origin;
 
 // WebSocket Centrifugo
 const centrifuge = new Centrifuge(
-  `${baseURL.replace(/^http/, "ws")}/connection/websocket`,
+  `${baseURL.replace(/^https/, "ws").replace(/^http/, "ws")}:8000/connection/websocket`,
 );
 const sub = centrifuge.newSubscription(room);
 
