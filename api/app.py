@@ -15,7 +15,7 @@ templates = Jinja2Templates(directory="templates")
 
 
 CENTRIFUGO_API = "http://centrifugo:8000/api"
-API_KEY = "apikey"
+API_KEY = "apikeycodeapikeycode"
 
 
 @app.get("/create-room")
@@ -41,11 +41,12 @@ def send_message(room: str, user: str, text: str):
         }
     }
 
-    requests.post(
+    res = requests.post(
         CENTRIFUGO_API,
         json=payload,
         headers={"Authorization": f"apikey {API_KEY}"}
     )
+    print(res)
 
     return {"status": "ok"}
 
