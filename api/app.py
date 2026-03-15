@@ -5,7 +5,12 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+import jwt
+import time
 
+CENTRIFUGO_LIFETIME = 3600*240    # 1 ساعت
 app = FastAPI()
 # static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -13,9 +18,22 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # templates
 templates = Jinja2Templates(directory="templates")
 
-
+CENTRIFUGO_SECRET = "token_hmac_secret_keysecrettoken_hmac_secret_key"
 CENTRIFUGO_API = "http://centrifugo:8000/api"
 API_KEY = "apikeycodeapikeycode"
+
+
+@app.get("/token")
+def get_token(user: str = "guest", room: str = "default"):
+    now = int(time.time())
+    payload = {
+        "sub": user,
+        "exp": now + CENTRIFUGO_LIFETIME,
+        "room": room,
+        "info": {"user": user},
+    }
+    token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
+    return JSONResponse({"token": token})
 
 
 @app.get("/create-room")

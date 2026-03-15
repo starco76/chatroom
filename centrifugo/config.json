@@ -1,5 +1,5 @@
 {
-  "token_hmac_secret_key": "",
+  "token_hmac_secret_key": "token_hmac_secret_keysecrettoken_hmac_secret_key",
   "admin": true,
   "admin_password": "admin_passwordadminadmin_password",
   "admin_secret": "admin_secretsecretadmin_secret",
