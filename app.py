@@ -51,8 +51,7 @@ def get_token(user: str, room: str):
     payload = {
         "sub": str(user),
         "exp":  now + TOKEN_LIFETIME,
-        "info": {},
-        "channels": f"public:{room}"
+        "channels": [f"public:{room}"]
     }
     token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
     return JSONResponse({"token": token})
