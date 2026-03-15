@@ -1,0 +1,18 @@
+services:
+
+  centrifugo:
+    image: centrifugo/centrifugo:v5
+    container_name: centrifugo
+    command: centrifugo -c config.json
+    volumes:
+      - ./centrifugo/config.json:/centrifugo/config.json
+    ports:
+      - "8000:8000"
+
+  api:
+    build: ./api
+    container_name: chat_api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - centrifugo
