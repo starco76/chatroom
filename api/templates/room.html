@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/centrifuge.js"></script>
+</head>
+
+<body>
+
+    <h3>Room: {{ room_id }}</h3>
+
+    <div id="chat"></div>
+
+    <input id="msg">
+    <button onclick="send()">Send</button>
+
+    <script>
+        const room = "{{ room_id }}"
+    </script>
+
+    <script src="/static/chat.js"></script>
+
+</body>
+
+</html>
