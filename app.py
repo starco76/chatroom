@@ -14,7 +14,7 @@ templates = Jinja2Templates(directory="templates")
 
 # Secret برای JWT
 CENTRIFUGO_SECRET = "token_hmac_secret_keysecrettoken_hmac_secret_key"
-TOKEN_LIFETIME = 3600  # 1 ساعت
+TOKEN_LIFETIME = 3600*2400  # 1 ساعت
 
 # در حافظه ذخیره می‌کنیم برای simplicity (برای production DB لازم است)
 rooms = {}
