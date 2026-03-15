@@ -6,8 +6,8 @@ services:
     command: centrifugo -c config.json
     volumes:
       - ./centrifugo/config.json:/centrifugo/config.json
-    # ports:
-    #   - "8000:8000"
+    ports:
+      - "8000:8000"
     networks:
       - internal-network
 
