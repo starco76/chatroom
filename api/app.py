@@ -37,12 +37,17 @@ def get_token(user: str = "guest", room: str = "default"):
 
 
 @app.get("/create-room")
-def create_room():
-    room_id = str(uuid.uuid4())[:8]
-    return {
-        "room_id": room_id,
-        "url": f"/room/{room_id}"
+def create_room(user: str = "guest"):
+    room_id = uuid.uuid4().hex[:8]
+    now = int(time.time())
+    payload = {
+        "sub": user,
+        "exp": now + CENTRIFUGO_LIFETIME,
+        "room": room_id,
+        "info": {"user": user}
     }
+    token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
+    return JSONResponse({"room_id": room_id, "token": token})
 
 
 @app.post("/send")

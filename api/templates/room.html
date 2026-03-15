@@ -7,15 +7,29 @@
 
 <body>
 
-    <h3>Chat Room</h3>
+    <h2>Create Chat Room</h2>
 
-    <div id="chat"></div>
+    <label>Enter your name:</label>
+    <input id="username" placeholder="Your name">
+    <button onclick="createRoom()">Create</button>
 
-    <input id="msg">
-    <button onclick="send()">Send</button>
+    <div id="link"></div>
 
-    <script src="/static/centrifuge.js"></script>
-    <script src="/static/chat.js"></script>
+    <script>
+        async function createRoom() {
+            const user = document.getElementById("username").value.trim();
+            if (!user) {
+                alert("Please enter your name");
+                return;
+            }
+
+            const res = await fetch(`/create-room?user=${encodeURIComponent(user)}`);
+            const data = await res.json();
+
+            document.getElementById("link").innerHTML =
+                `<a href="/room/${data.room_id}?user=${encodeURIComponent(user)}">Enter Chat</a>`;
+        }
+    </script>
 
 </body>
 
