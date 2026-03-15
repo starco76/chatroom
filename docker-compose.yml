@@ -23,5 +23,5 @@ services:
       - centrifugo
 networks:
   internal-network:
-    name: $chat-network
+    name: chat-network
     driver: bridge
