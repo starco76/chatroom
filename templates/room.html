@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h3>Chat Room</h3>
+
+<div id="user-form">
+    <input id="username" placeholder="Enter your name">
+    <button onclick="joinChat()">Join Chat</button>
+</div>
+
+<div id="chat-container" style="display:none">
+    <div id="chat"></div>
+    <div id="typing"></div>
+    <input id="msg" placeholder="Type a message">
+    <button onclick="send()">Send</button>
+</div>
+
+<script src="/static/centrifuge.js"></script>
+<script src="/static/chat.js"></script>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const room_id = window.location.pathname.split("/").pop();
+
+function joinChat(){
+    const user = document.getElementById("username").value.trim();
+    if(!user) { alert("Enter your name"); return; }
+
+    // گرفتن JWT از API
+    fetch(`/token?user=${encodeURIComponent(user)}&room=${room_id}`)
+    .then(res => res.json())
+    .then(data => {
+        window.username = user;
+        window.token = data.token;
+
+        document.getElementById("user-form").style.display = "none";
+        document.getElementById("chat-container").style.display = "block";
+
+        startChat();
+    });
+}
+</script>
+
+</body>
+</html>

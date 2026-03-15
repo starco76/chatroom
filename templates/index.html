@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h2>Create Chat Room (Admin)</h2>
+
+<input id="adminname" placeholder="Your name (admin)">
+<button onclick="createRoom()">Create Room</button>
+
+<div id="link"></div>
+
+<script>
+async function createRoom(){
+    const user = document.getElementById("adminname").value.trim();
+    if(!user) { alert("Enter admin name"); return; }
+    const res = await fetch(`/create-room?user=${encodeURIComponent(user)}`);
+    const data = await res.json();
+    document.getElementById("link").innerHTML =
+        `<a href="/room/${data.room_id}?user=admin">Enter Room</a>`;
+}
+</script>
+
+</body>
+</html>
