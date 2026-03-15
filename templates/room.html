@@ -38,10 +38,8 @@
                 .then(data => {
                     window.username = user;
                     window.token = data.token;
-
                     document.getElementById("user-form").style.display = "none";
                     document.getElementById("chat-container").style.display = "block";
-
                     startChat();
                 });
         }

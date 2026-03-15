@@ -13,7 +13,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Secret برای JWT
-CENTRIFUGO_SECRET = "token_hmac_secret_keysecrettoken_hmac_secret_key"
+CENTRIFUGO_SECRET = "l7wqnySzfsmfkjXLAEWpeaiQ3r4pr"
 TOKEN_LIFETIME = 3600*2400  # 1 ساعت
 
 # در حافظه ذخیره می‌کنیم برای simplicity (برای production DB لازم است)
@@ -32,11 +32,7 @@ def index(request: Request):
 @app.get("/create-room")
 def create_room(user: str = "admin"):
     room_id = uuid.uuid4().hex[:8]
-    rooms[room_id] = {"users": {}}
-    now = int(time.time())
-    payload = {"sub": user, "exp": now + TOKEN_LIFETIME, "room": room_id}
-    token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
-    return JSONResponse({"room_id": room_id, "token": token})
+    return JSONResponse({"room_id": room_id})
 
 # صفحه چت روم
 
@@ -51,22 +47,27 @@ def room_page(request: Request, room_id: str):
 @app.get("/token")
 def get_token(user: str, room: str):
     now = int(time.time())
-    payload = {"sub": user, "exp": now + TOKEN_LIFETIME,
-               "room": room, "info": {"user": user}}
+    now = int(time.time())
+    payload = {
+        "sub": str(user),
+        "exp":  now + TOKEN_LIFETIME,
+        "info": {},
+        "channels": f"public:{room}"
+    }
     token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
     return JSONResponse({"token": token})
 
 
 # یا http://localhost:8000/api اگر لوکال
 CENTRIFUGO_URL = "http://centrifugo:8000/api"
-CENTRIFUGO_API_KEY = "apikeycodeapikeycode"
+CENTRIFUGO_API_KEY = "1pUzkClviGKurR1D"
 
 
 @app.post("/send")
 def send_message(room: str, user: str, text: str):
     # پیام را به Centrifugo publish می‌کنیم
     payload = {
-        "channel": room,
+        "channel": f"public:{room}",
         "data": {"user": user, "text": text}
     }
     headers = {"Authorization": f"apikey {CENTRIFUGO_API_KEY}"}
