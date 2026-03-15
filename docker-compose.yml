@@ -6,13 +6,21 @@ services:
     command: centrifugo -c config.json
     volumes:
       - ./centrifugo/config.json:/centrifugo/config.json
-    ports:
-      - "8000:8000"
+    # ports:
+    #   - "8000:8000"
+    networks:
+      - internal-network
 
   api:
     build: ./api
     container_name: chat_api
-    ports:
-      - "5000:5000"
+    # ports:
+    #   - "5000:5000"
+    networks:
+      - internal-network
     depends_on:
       - centrifugo
+networks:
+  internal-network:
+    name: $chat-network
+    driver: bridge
