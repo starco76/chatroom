@@ -31,7 +31,7 @@ def index(request: Request):
 
 @app.get("/create-room")
 def create_room(user: str = "admin"):
-    room_id = uuid.uuid4().hex[:8]
+    room_id = "test"  # uuid.uuid4().hex[:8]
     return JSONResponse({"room_id": room_id})
 
 # صفحه چت روم

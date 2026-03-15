@@ -1,5 +1,5 @@
 let centrifuge, sub;
-function startChat() {
+const startChat = async () => {
   // centrifuge = new Centrifuge(
   //   `ws://${window.location.hostname}:8008/connection/websocket`,
   //   { token: window.token },
@@ -40,11 +40,11 @@ function startChat() {
   //     }, 2000);
   //   }
   // });
-  const centrifuge = new Centrifuge(
+  centrifuge = new Centrifuge(
     `ws://${window.location.hostname}:8008/connection/websocket`,
     { token: window.token },
   );
-  centrifuge.connect();
+  await centrifuge.connect();
 
   centrifuge.on("connect", (ctx) => {
     console.log("✅ Connected: " + JSON.stringify(ctx));
@@ -74,13 +74,13 @@ function startChat() {
     // chatDiv.appendChild(div);
     // chatDiv.scrollTop = chatDiv.scrollHeight;
   });
-}
+};
 
 function send() {
   const text = document.getElementById("msg").value;
   if (!text) return;
 
-  fetch(
+  centrifuge.send(
     `/send?room=${window.location.pathname.split("/").pop()}&user=${window.username}&text=${encodeURIComponent(text)}`,
     {
       method: "POST",
