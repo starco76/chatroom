@@ -46,7 +46,7 @@ def send_message(room: str, user: str, text: str):
         json=payload,
         headers={"Authorization": f"apikey {API_KEY}"}
     )
-    print(res)
+    print(res.text)
 
     return {"status": "ok"}
 
