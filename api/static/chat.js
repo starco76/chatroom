@@ -1,5 +1,5 @@
-const urlParams = new URLSearchParams(window.location.search);
-const room = urlParams.get("room");
+// گرفتن room از آدرس
+const room = window.location.pathname.split("/").pop();
 
 const centrifuge = new Centrifuge("ws://localhost:8000/connection/websocket");
 
@@ -20,7 +20,7 @@ centrifuge.connect();
 function send() {
   let text = document.getElementById("msg").value;
 
-  fetch(`http://localhost:5000/send?room=${room}&user=guest&text=${text}`, {
+  fetch(`/send?room=${room}&user=guest&text=${text}`, {
     method: "POST",
   });
 }
