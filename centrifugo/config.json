@@ -3,7 +3,7 @@
     "ping_interval": "10s",
     "pong_timeout": "4s",
     "token": {
-      "hmac_secret_key": "l7wqnySzfsmfkjXLAEWpeaiQ3r4pr"
+      "hmac_secret_key": "l7wqnySzfsmfkjXLAEWpeaiQ3r4prHJI0u83bh32w8HZ5H85dOA"
     },
     "allowed_origins": ["*"]
   },

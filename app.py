@@ -6,10 +6,6 @@ import jwt
 import uuid
 import time
 import requests
-import hmac
-import hashlib
-import json
-import base64
 app = FastAPI()
 
 # Static files + templates
@@ -17,7 +13,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Secret برای JWT
-CENTRIFUGO_SECRET = b"l7wqnySzfsmfkjXLAEWpeaiQ3r4pr"
+CENTRIFUGO_SECRET = b"l7wqnySzfsmfkjXLAEWpeaiQ3r4prHJI0u83bh32w8HZ5H85dOA"
 TOKEN_LIFETIME = 3600*2400  # 1 ساعت
 
 # در حافظه ذخیره می‌کنیم برای simplicity (برای production DB لازم است)
@@ -58,12 +54,7 @@ def get_token(user: str, room: str):
         "info": {},
         "channels": [f"public:{room}"]
     }
-    payload_bytes = json.dumps(payload).encode("utf-8")
-
-    signature = hmac.new(CENTRIFUGO_SECRET, payload_bytes,
-                         hashlib.sha256).digest()
-    token = base64.urlsafe_b64encode(payload_bytes + signature).decode()
-    # token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
+    token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
     return JSONResponse({"token": token})
 
 
