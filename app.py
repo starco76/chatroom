@@ -60,11 +60,11 @@ def get_token(user: str, room: str):
     }
     payload_bytes = json.dumps(payload).encode("utf-8")
 
-
-signature = hmac.new(CENTRIFUGO_SECRET, payload_bytes, hashlib.sha256).digest()
-token = base64.urlsafe_b64encode(payload_bytes + signature).decode()
-# token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
-return JSONResponse({"token": token})
+    signature = hmac.new(CENTRIFUGO_SECRET, payload_bytes,
+                         hashlib.sha256).digest()
+    token = base64.urlsafe_b64encode(payload_bytes + signature).decode()
+    # token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
+    return JSONResponse({"token": token})
 
 
 # یا http://localhost:8000/api اگر لوکال
