@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 import jwt
 import uuid
 import time
-
+import requests
 app = FastAPI()
 
 # Static files + templates
@@ -55,3 +55,24 @@ def get_token(user: str, room: str):
                "room": room, "info": {"user": user}}
     token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
     return JSONResponse({"token": token})
+
+
+# یا http://localhost:8000/api اگر لوکال
+CENTRIFUGO_URL = "http://centrifugo:8000/api"
+CENTRIFUGO_API_KEY = "apikeycodeapikeycode"
+
+
+@app.post("/send")
+def send_message(room: str, user: str, text: str):
+    # پیام را به Centrifugo publish می‌کنیم
+    payload = {
+        "channel": room,
+        "data": {"user": user, "text": text}
+    }
+    headers = {"Authorization": f"apikey {CENTRIFUGO_API_KEY}"}
+
+    r = requests.post(f"{CENTRIFUGO_URL}/publish",
+                      json=payload, headers=headers)
+    if r.status_code != 200:
+        return JSONResponse({"error": "failed to send"}, status_code=500)
+    return JSONResponse({"status": "ok"})
