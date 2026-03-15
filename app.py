@@ -47,10 +47,11 @@ def room_page(request: Request, room_id: str):
 @app.get("/token")
 def get_token(user: str, room: str):
     now = int(time.time())
-    now = int(time.time())
+    expire_at = (now) + TOKEN_LIFETIME
     payload = {
         "sub": str(user),
-        "exp":  now + TOKEN_LIFETIME,
+        "exp":  expire_at,
+        "info": {},
         "channels": [f"public:{room}"]
     }
     token = jwt.encode(payload, CENTRIFUGO_SECRET, algorithm="HS256")
