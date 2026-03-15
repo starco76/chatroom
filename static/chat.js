@@ -1,7 +1,7 @@
 let centrifuge, sub;
 function startChat() {
   centrifuge = new Centrifuge(
-    `ws://${window.location.host}/connection/websocket`,
+    `ws://${window.location.hostname}:8008/connection/websocket`,
     { token: window.token },
   );
 
