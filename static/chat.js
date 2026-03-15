@@ -40,46 +40,11 @@ function startChat() {
   //     }, 2000);
   //   }
   // });
-  let centrifuge = null;
-
-  function log(msg) {
-    console.log(msg);
-  }
-
-  document.getElementById("connectBtn").addEventListener("click", async () => {
-    // از سرور Django توکن بگیر
-    const channels = ["public:market"];
-    const id = "1234567800";
-    const urls = `https://market.robinsood.com/generate-token/`;
-    const response = await fetch(urls, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Token 4656b9048ae1f42f2f96907d4b5ceb593ac9a647",
-      },
-      body: JSON.stringify({
-        id: id,
-        channels: channels,
-      }),
-    });
-    const responseText = await response.text();
-    log(responseText);
-
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (error) {
-      log("Error parsing JSON: " + error);
-      return;
-    }
-    const token = data.token;
-    log(token);
-
-    centrifuge = new Centrifuge(
+    const centrifuge = new Centrifuge(
       `ws://${window.location.hostname}:8008/connection/websocket`,
       { token: window.token },
     );
-    const url = await centrifuge.connect();
+    centrifuge.connect();
 
     centrifuge.on("connect", (ctx) => {
       log("✅ Connected: " + JSON.stringify(ctx));
@@ -109,8 +74,7 @@ function startChat() {
       // chatDiv.appendChild(div);
       // chatDiv.scrollTop = chatDiv.scrollHeight;
     });
-  });
-}
+  };
 
 function send() {
   const text = document.getElementById("msg").value;
