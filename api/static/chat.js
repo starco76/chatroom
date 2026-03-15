@@ -1,8 +1,13 @@
 // گرفتن room از آدرس
 const room = window.location.pathname.split("/").pop();
 
-const centrifuge = new Centrifuge("ws://localhost:8000/connection/websocket");
+// Base URL داینامیک
+const baseURL = window.location.origin;
 
+// WebSocket Centrifugo
+const centrifuge = new Centrifuge(
+  `${baseURL.replace(/^http/, "ws")}/connection/websocket`,
+);
 const sub = centrifuge.newSubscription(room);
 
 sub.on("publication", function (ctx) {
