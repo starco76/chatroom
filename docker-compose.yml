@@ -12,7 +12,8 @@ services:
       - internal-network
 
   api:
-    build: i
+    build:
+      context: .   
     container_name: chat_api
     # ports:
     #   - "5000:5000"
