@@ -75,4 +75,4 @@ def send_message(room: str, user: str, text: str):
                       json=payload, headers=headers)
     if r.status_code != 200:
         return JSONResponse({"error": "failed to send"}, status_code=500)
-    return JSONResponse({"status": "ok"})
+    return JSONResponse({"status": "ok", "msg": r.text})

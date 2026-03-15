@@ -43,7 +43,7 @@ function startChat() {
   let centrifuge = null;
 
   function log(msg) {
-    document.getElementById("log").textContent += msg + "\n";
+    console.log(msg);
   }
 
   document.getElementById("connectBtn").addEventListener("click", async () => {
@@ -51,7 +51,6 @@ function startChat() {
     const channels = ["public:market"];
     const id = "1234567800";
     const urls = `https://market.robinsood.com/generate-token/`;
-    log(urls);
     const response = await fetch(urls, {
       method: "POST",
       headers: {
